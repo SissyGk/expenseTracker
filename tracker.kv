@@ -1,0 +1,45 @@
+<trackerLayout>:
+    orientation: 'vertical'
+    padding:20
+    spacing:10
+
+    TextInput:
+        id:amount_input
+        hint_text:"Enter amount"
+        input_filter:'float'
+        size_hint_y:None
+        height:40
+
+    TextInput:
+        id:note_input
+        hint_text:"Enter note"
+        size_hint_y:None
+        height:40
+
+    Button:
+        text:"Add Expense"
+        size_hint_y:None
+        height:40
+        on_press:root.add_expense()
+
+    Label:
+        id:status_Label
+        text:"No expense added yet"
+        size_hint_y:None
+        height:30
+
+    Label:
+        id:sum_label
+        text:"Total Expenses: 0.00€"
+        size_hint_y:None
+        height:30
+        bolt:TrackerLayout
+    
+    ScrollView:
+        do_scroll_x:False
+
+        BoxLayout:
+            id:expense_list
+            orientation:'vertical'
+            size_hint_y:None
+            height:self.minimum_height

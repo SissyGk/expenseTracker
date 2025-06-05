@@ -38,26 +38,16 @@ class trackerLayout(BoxLayout): #inherits from BoxLayout
     def __init__(self,**kwargs):
         super().__init__(**kwargs)
         self.load_expenses() #update expenses list from json file
-        self.orientation='vertical'
         
         #Labels
-        self.amount_input = TextInput(hint_text='Enter amount',input_filter='float')
-        self.add_widget(self.amount_input)
+        amount=self.ids.amount_input.text
         
-        self.note_input = TextInput(hint_text='Enter note')
-        self.add_widget(self.note_input)
+        note=self.ids.note_input.text
 
-        self.add_button = Button(text='Add Expense')
-        self.add_button.bind(on_press=self.add_expense)
-        self.add_widget(self.add_button)
-
-        self.status = Label(text='No expense added yet')
-        self.add_widget(self.status)        
+        self.ids.status_label.text="Expense added"        
         
         total=sum(exp[0] for exp in self.expenses) #var total with sum of expenses
-        self.sum=Label(text=f"Total Expenses:{total:.2f}€")
-        self.add_widget(self.sum)       
-        self.sum.text=f"Total Expenses:{total:.2f}€"
+        self.ids.sum_label.text=f"Total Expenses:{total:.2f}€"
         
         #DISPLAY OF FULL LIST OF EXPENSES
         self.expense_list_layout = BoxLayout(orientation='vertical',size_hint_y=None)
@@ -74,8 +64,8 @@ class trackerLayout(BoxLayout): #inherits from BoxLayout
         with open("expenses.json","w") as f:
             json.dump(self.expenses,f)
         
-    def add_expense(self,instance):
-        amount_text=self.amount_input.text.strip()
+    def add_expense(self,**args):
+        amount_text=self.ids.amount_input.text.strip()
         note_text=self.note_input.text.strip()
         
         if not amount_text:
@@ -92,9 +82,9 @@ class trackerLayout(BoxLayout): #inherits from BoxLayout
         
         self.expenses.append((amount,note_text)) #add expense in list
         self.add_expense_to_list(amount,note_text)
-        self.status.text=f"Added expense: €{amount:.2f} - {note_text if note_text else 'No note'}"
+        self.ids.status_label.text=f"Added expense: €{amount:.2f} - {note_text if note_text else 'No note'}"
         total=sum(exp[0] for exp in self.expenses)
-        self.sum.text=f"Total expenses: {total:.2f}€"
+        self.ids.sum_label.text=f"Total expenses: {total:.2f}€"
         self.save_expenses()
         
         self.amount_input.text=""
